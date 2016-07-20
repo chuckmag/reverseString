@@ -1,0 +1,24 @@
+{
+  "name": "reversestring",
+  "version": "1.0.0",
+  "description": "Reversing a string front to back!",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chuckmag/reverseString.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chuckmag/reverseString/issues"
+  },
+  "homepage": "https://github.com/chuckmag/reverseString#readme",
+  "dependencies": {
+    "hapi": "^13.5.0",
+    "inert": "^4.0.1"
+  }
+}
