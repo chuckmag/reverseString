@@ -9,6 +9,8 @@ server.connection({
     port: 8000 
 });
 
+
+// register a static html page to display at the root of the website.
 server.register(require('inert'), (err) => {
 
     if (err) {
@@ -22,9 +24,17 @@ server.register(require('inert'), (err) => {
             reply.file('./public/index.html');
         }
     });
+	
+	server.route({
+        method: 'GET',
+        path: '/src/{fileName}',
+        handler: function (request, reply) {
+            reply.file('./src/' + request.params.fileName);
+        }
+    });
 });
 
-// Add the route
+// Basic hello world route.
 server.route({
     method: 'GET',
     path:'/hello', 
@@ -42,7 +52,7 @@ const reverseStringHandler = function (request, reply) {
 	return reply(reverseString(request.params.stringToReverse));
 };
 
-// Add the route
+// Adding a route to reverse a string that is sent as a parameter.
 server.route({
     method: 'GET',
     path:'/reverseString/{stringToReverse}', 

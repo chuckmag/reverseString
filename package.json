@@ -18,7 +18,11 @@
   },
   "homepage": "https://github.com/chuckmag/reverseString#readme",
   "dependencies": {
+    "babel-preset-react": "^6.11.1",
+    "babelify": "^7.3.0",
     "hapi": "^13.5.0",
-    "inert": "^4.0.1"
+    "inert": "^4.0.1",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1"
   }
 }
