@@ -34,18 +34,14 @@ server.register(require('inert'), (err) => {
     });
 });
 
-// Basic hello world route.
-server.route({
-    method: 'GET',
-    path:'/hello', 
-    handler: function (request, reply) {
-			
-        return reply('hello world');
-    }
-});
-
 const reverseString = function (stringToReverse) {
 	return stringToReverse.split('').reverse().join('');
+	
+	// //without a cheat.. but then why reinvent the wheel
+	// var r = '';
+	// for (var i = stringToReverse.length - 1; i >= 0; i--)
+		// r += stringToReverse[i];
+	// return r;
 };
 
 const reverseStringHandler = function (request, reply) {
