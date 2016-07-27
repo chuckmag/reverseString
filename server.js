@@ -1,6 +1,7 @@
 'use strict';
 
 const Hapi = require('hapi');
+const SocketIO = require('socket.io');
 
 // Create a server with a host and port
 const server = new Hapi.Server();
@@ -9,6 +10,19 @@ server.connection({
     port: 8000 
 });
 
+var io = SocketIO.listen(server.listener);
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+  socket.on('reverse string', function(s){
+    console.log('reversing the string: ' + s);
+	var reversedString = reverseString(s);
+    console.log('reversed string: ' + reversedString);
+	io.emit('reverse string', reversedString);
+  });
+});
 
 // register a static html page to display at the root of the website.
 server.register(require('inert'), (err) => {
@@ -17,21 +31,23 @@ server.register(require('inert'), (err) => {
         throw err;
     }
 
-    server.route({
-        method: 'GET',
+    server.route([
+		{method: 'GET',
         path: '/',
         handler: function (request, reply) {
-            reply.file('./public/index.html');
-        }
-    });
-	
-	server.route({
-        method: 'GET',
+            reply.file('./public/index.html');}
+		},
+		{method: 'GET',
         path: '/src/{fileName}',
         handler: function (request, reply) {
-            reply.file('./src/' + request.params.fileName);
-        }
-    });
+            reply.file('./src/' + request.params.fileName);}
+		},
+		{method: 'GET',
+        path: '/src/dependencies/angular-socket-io-master/{fileName}',
+        handler: function (request, reply) {
+            reply.file('./src/dependencies/angular-socket-io-master/' + request.params.fileName);}
+		}
+    ]);
 });
 
 const reverseString = function (stringToReverse) {
