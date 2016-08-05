@@ -64,12 +64,65 @@ const reverseStringHandler = function (request, reply) {
 	return reply(reverseString(request.params.stringToReverse));
 };
 
+
+const isPalindrome = function (stringToCheck) {
+	if(typeof stringToCheck !== "string") {
+		return false;
+	}
+	
+	var stringToCheckStripped = stringToCheck.replace(/ /g, '').toLowerCase();
+	if (stringToCheckStripped[0] !== stringToCheckStripped[stringToCheckStripped.length-1]) {
+		return false;
+	}
+	var midPointFloor = Math.floor(stringToCheckStripped.length/2);
+	console.log(midPointFloor);
+	var reverseHalf = '';
+	for (var i = stringToCheckStripped.length - 1; i >= midPointFloor; i--) {
+		if (i === midPointFloor && stringToCheckStripped.length % 2 != 0) {
+			break;
+		}
+		reverseHalf += stringToCheckStripped[i];
+	}
+	console.log("First half of string = " + stringToCheckStripped.substring(0,midPointFloor));
+	console.log("Second half reversed string = " + reverseHalf);
+	console.log("Is Palindrome? " + (stringToCheckStripped.substring(0,midPointFloor) === reverseHalf));
+	return stringToCheckStripped.substring(0,midPointFloor) === reverseHalf;
+};
+
+const palindromeHandler = function (request, reply) {
+	return reply(isPalindrome(request.params.stringToCheck));
+};
+
+const isPalindromeBad = function (stringToCheck, reverseStringToCheck) {
+	if(typeof stringToCheck !== 'string' || typeof reverseStringToCheck !== 'string') {
+		return false;
+	}
+	
+	stringToCheck = stringToCheck.replace(/ /g, '').toLowerCase();
+	reverseStringToCheck = reverseStringToCheck.replace(/ /g, '').toLowerCase();
+	
+	return stringToCheck === reverseStringToCheck;
+};
+
+const palindromeBadHandler = function (request, reply) {
+	var stringToCheckParts = request.params.stringToCheck.split('/');
+	return reply(isPalindromeBad(stringToCheckParts[0],stringToCheckParts[1]));
+};
+
 // Adding a route to reverse a string that is sent as a parameter.
-server.route({
+server.route([{
     method: 'GET',
     path:'/reverseString/{stringToReverse}', 
     handler: reverseStringHandler
-});
+	},
+	{method: 'GET',
+    path:'/isPalindrome/{stringToCheck}', 
+    handler: palindromeHandler
+	},
+	{method: 'GET',
+    path:'/isPalindromeBad/{stringToCheck*2}', 
+    handler: palindromeBadHandler
+	}]);
 
 // Start the server
 server.start((err) => {
